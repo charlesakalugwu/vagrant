@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "vagrant-centos6-amd64"
+  config.vm.box_url = "https://www.dropbox.com/s/4hr24xut3kb1uxz/vagrant-centos6-amd64.box?dl=1"
+  config.vm.provision :shell, path: "bootstrap.sh"
+  
+  config.vm.hostname = "jenkins.test"
+  config.vm.network :private_network, ip: "192.168.0.42"
+  config.vm.network :forwarded_port, host: 8081, guest: 8080
+
+  config.vm.provider "virtualbox" do |v|
+    v.name = "jenkins.test"
+    v.memory = 512
+    v.customize [
+        "modifyvm", :id,
+        "--cpus", 2,
+        "--pae", "on",
+    ]
+  end
+  
+end
