@@ -14,10 +14,20 @@
 	sudo yum -y install jenkins
 	chkconfig jenkins on
 	sudo service jenkins start
+	
+	if [ ! -f /tmp/jenkins.plugins.tar.gz ]
+	then
+	   wget -O /tmp/jenkins.plugins.tar.gz https://www.dropbox.com/s/fct46u6rmg7akzc/jenkins.plugins.tar.gz?dl=1
+	fi
+	
+	tar xvf /tmp/jenkins.plugins.tar.gz
+	sudo cp ./jenkins.plugins/* /var/lib/jenkins/plugins
+	sudo service jenkins restart
 	sudo netstat -nlp | grep :8080
 	
 # Setup iptables rules
-	
-	iptables -A INPUT -s 192.168.0.0/24 -p tcp --dport 8080 -j ACCEPT
+
+	iptables -F
+	sudo iptables -I INPUT -j ACCEPT
 	service iptables save
 	iptables -L -nv
