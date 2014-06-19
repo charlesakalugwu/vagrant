@@ -92,49 +92,23 @@ if [ ! -d ydFlow ];then
     git clone git@github.com:yourdelivery/ydFlow.git ydFlow
 fi
 
-#initialize repositories
-cd ydData
-git checkout master
-git reset --hard HEAD
-git pull
-git checkout $BRANCH
-git pull origin $BRANCH
-mvn clean
-mvn install -DskipTests
 
-cd ..
-
-cd ydFlow
-git checkout master
-git reset --hard HEAD
-git pull 
-git checkout $BRANCH
-mvn clean
-mvn install -DskipTests
-
-cd ..
-
-cd ydRest
-git checkout master
-git reset --hard HEAD
-git pull 
-git checkout $BRANCH
-git pull origin $BRANCH
-mvn clean
-mvn validate
 
 if [ "$ENV" == "production" ];then
+    sudo touch /opt/jetty/contexts/production-$VERSION.xml
     sudo cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/api/g" | sed -e "s/#CONTEXT_NAME#/production/g" | sed -e "s/#ENVIROMENT#/live/g" > /opt/jetty/contexts/production-$VERSION.xml
     sudo mvn install -DskipTests -Denv=live -Djettydir=/opt/jetty/webapps -Dcontainer=production-$VERSION
 fi
 
 if [ "$ENV" == "staging" ];then
+	sudo touch /opt/jetty/contexts/staging-$VERSION.xml
     sudo cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/stage/g" | sed -e "s/#CONTEXT_NAME#/staging/g" | sed -e "s/#ENVIROMENT#/staging/g" > /opt/jetty/contexts/staging-$VERSION.xml
     sudo mvn install -DskipTests -Denv=staging -Djettydir=/opt/jetty/webapps -Dcontainer=staging-$VERSION
 fi
 
 if [ "$ENV" == "vagrant" ];then
-    sudo cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/rest/g" | sed -e "s/#CONTEXT_NAME#/vagrant/g" | sed -e "s/#ENVIROMENT#/vagrant/g" > /opt/jetty/contexts/vagrant-$VERSION.xml
+	sudo touch /opt/jetty/contexts/vagrant-$VERSION.xml
+    cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/rest/g" | sed -e "s/#CONTEXT_NAME#/vagrant/g" | sed -e "s/#ENVIROMENT#/vagrant/g" > /opt/jetty/contexts/vagrant-$VERSION.xml
     sudo mvn install -DskipTests -Denv=staging -Djettydir=/opt/jetty/webapps -Dcontainer=vagrant-$VERSION
 fi
 
