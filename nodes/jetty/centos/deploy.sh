@@ -108,7 +108,7 @@ fi
 
 if [ "$ENV" == "vagrant" ];then
 	sudo touch /opt/jetty/contexts/vagrant-$VERSION.xml
-    cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/rest/g" | sed -e "s/#CONTEXT_NAME#/vagrant/g" | sed -e "s/#ENVIROMENT#/vagrant/g" > /opt/jetty/contexts/vagrant-$VERSION.xml
+    sudo cat /vagrant/context.xml | sed -e "s/#VERSION#/$VERSION/g" | sed -e "s/#ROOT_PATH#/rest/g" | sed -e "s/#CONTEXT_NAME#/vagrant/g" | sed -e "s/#ENVIROMENT#/vagrant/g" > /opt/jetty/contexts/vagrant-$VERSION.xml
     sudo mvn install -DskipTests -Denv=staging -Djettydir=/opt/jetty/webapps -Dcontainer=vagrant-$VERSION
 fi
 

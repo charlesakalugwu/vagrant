@@ -30,10 +30,12 @@
 	ln -s /vagrant/deploy.sh /home/vagrant/deploy.sh
 	ln -s /vagrant/context.xml /home/vagrant/context.xml
 	
-	ln -s /vagrant/ssh/id_vagrant_jetty_rsa /home/vagrant/.ssh/id_vagrant_jetty_rsa
-	ln -s /vagrant/ssh/id_vagrant_jetty_rsa.pub /home/vagrant/.ssh/id_vagrant_jetty_rsa.pub
+	ln -s /vagrant/ssh/id_vagrant_rsa /home/vagrant/.ssh/id_vagrant_rsa
+	ln -s /vagrant/ssh/id_vagrant_rsa.pub /home/vagrant/.ssh/id_vagrant_rsa.pub
+	sudo chmod 600 /home/vagrant/.ssh/id_vagrant_rsa
+	sudo chmod 600 /home/vagrant/.ssh/id_vagrant_rsa.pub
 	eval `ssh-agent`
-	ssh-add /home/vagrant/.ssh/id_vagrant_jetty_rsa &>/dev/null
+	ssh-add /home/vagrant/.ssh/id_vagrant_rsa
 	
 	sudo chkconfig jetty on
 	sudo service jetty start
@@ -54,7 +56,7 @@
 	sudo echo "export PATH=${M2_HOME}/bin:${PATH}" >> /etc/profile.d/maven.sh
 	sudo rm apache-maven-3.2.1-bin.tar.gz
 	chmod +x /etc/profile.d/maven.sh
-	sud ./etc/profile.d/maven.sh
+	. /etc/profile.d/maven.sh
 	mvn -version
 	cd
 	
@@ -67,6 +69,8 @@
 	
 	
 # Deploy the API from master
-	cd /vagrant
-	sudo chmod +x deploy.sh
-	sudo ./deploy.sh -e vagrant -v master -b master
+	#cd /vagrant
+	#sudo chmod +x deploy.sh
+	#echo $MAVEN_HOME
+	#echo $M2_HOME
+	#sudo deploy.sh -e vagrant -v master -b master
