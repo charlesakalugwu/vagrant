@@ -1,4 +1,6 @@
-#!/bin/bash          
+#!/bin/bash
+# created by: charles akalugwu <charles@lieferando.de>
+# since: 19.06.2014        
 
 # Install Java if it is not installed
 
