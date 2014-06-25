@@ -63,8 +63,8 @@
 	
 	
 # install the nginx startup script
-
-	sudo cp /vagrant/nginx-startup-script.sh /etc/init.d/nginx
+	
+	wget -O /etc/init.d/nginx https://raw.githubusercontent.com/charleslieferando/vagrant/master/nodes/nginx/centos/nginx-startup-script.sh
 	
 # make the script executable
 
