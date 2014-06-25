@@ -10,12 +10,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "https://www.dropbox.com/s/4hr24xut3kb1uxz/vagrant-centos6-amd64.box?dl=1"
   config.vm.provision :shell, path: "bootstrap.sh"
   
-  config.vm.hostname = "jenkins.test"
+  config.vm.hostname = "jenkins"
   config.vm.network "private_network", ip: "192.168.0.42"
   config.vm.network "forwarded_port", guest: 8080, host: 6060
 
   config.vm.provider "virtualbox" do |v|
-    v.name = "jenkins.test"
+    v.name = "jenkins"
     v.customize ["modifyvm", :id, "--memory", "512"]
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
