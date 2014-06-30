@@ -16,7 +16,7 @@
 	unzip /tmp/apache-maven-3.2.1-bin.zip
 	sudo mv apache-maven-3.2.1/ /opt/maven/
 	sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
-	sudo cp /vagrant/maven.sh /etc/profile.d/
+	sudo cp /vagrant/maven.sh /etc/profile.d/maven.sh
 	sudo chmod +x /etc/profile.d/maven.sh
 	source /etc/profile.d/maven.sh
 	mvn -version
@@ -54,9 +54,46 @@
 	sudo chown -R jenkins:jenkins /var/lib/jenkins/jobs/
 	sudo rm -R ./jenkins.jobs
 	
+	
+# Setup github keys for jenkins
 
-	sudo service jenkins restart
-	sudo netstat -nlp | grep :8080
+	sudo cp /vagrant/ssh/github/id_github_rsa /home/vagrant/.ssh/
+	sudo chmod 600 /home/vagrant/.ssh/id_github_rsa
+	sudo chown -R vagrant:vagrant /home/vagrant/.ssh/id_github_rsa
+	sudo cp /vagrant/ssh/github/id_github_rsa.pub /home/vagrant/.ssh/
+	sudo chmod 600 /home/vagrant/.ssh/id_github_rsa.pub
+	sudo chown -R vagrant:vagrant /home/vagrant/.ssh/id_github_rsa.pub
+	
+	if [ ! -f /home/vagrant/.ssh/config ]
+	then
+	   sudo touch /home/vagrant/.ssh/config
+	   sudo cat /vagrant/ssh/github/github_ssh_config >> /home/vagrant/.ssh/config
+	   sudo chmod 600 /home/vagrant/.ssh/config
+	   sudo chown -R vagrant:vagrant /home/vagrant/.ssh/config
+	fi
+	
+	sudo service jenkins stop
+	
+	sudo mkdir /var/lib/jenkins/.ssh
+	sudo cp /home/vagrant/.ssh/id_github_rsa /var/lib/jenkins/.ssh/id_github_rsa
+	sudo chmod 600 /var/lib/jenkins/.ssh/id_github_rsa
+	sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh/id_github_rsa
+	sudo cp /home/vagrant/.ssh/id_github_rsa.pub /var/lib/jenkins/.ssh/id_github_rsa.pub
+	sudo chmod 600 /var/lib/jenkins/.ssh/id_github_rsa.pub
+	sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh/id_github_rsa.pub
+	
+	if sudo test -f "/var/lib/jenkins/.ssh/config"; then
+	   echo "/var/lib/jenkins/.ssh/config file already exist, skipping this step..."
+	else
+		echo "/var/lib/jenkins/.ssh/config file does not exist, creating it now..."
+		sudo touch /var/lib/jenkins/.ssh/config
+	    sudo cp /vagrant/ssh/github/github_ssh_config /var/lib/jenkins/.ssh/config
+	    sudo chmod 600 /var/lib/jenkins/.ssh/config
+	    sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh/config
+	fi
+	
+	sudo service jenkins start
+	
 	
 # Setup iptables rules
 
