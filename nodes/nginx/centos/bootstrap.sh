@@ -28,11 +28,11 @@
 	sudo tar xvf zlib-1.2.8.tar.gz
 	sudo rm zlib-1.2.8.tar.gz
 
-#download pcre 8.33
+#download pcre 8.36
 
-	sudo wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.gz
-	sudo tar xfz pcre-8.33.tar.gz
-	sudo rm pcre-8.33.tar.gz
+	sudo wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.gz
+	sudo tar xfz pcre-8.36.tar.gz
+	sudo rm pcre-8.36.tar.gz
 
 #download openssl 1.0.1g
 
@@ -50,7 +50,7 @@
 	cd nginx-1.6.0/
 
 #configure the installation with the dependencies
-	sudo ./configure --with-debug --user=nginx --group=nginx --with-pcre=../pcre-8.33/ --with-zlib=../zlib-1.2.8/ --with-http_ssl_module --with-openssl=../openssl-1.0.1g/ --add-module=../headers-more-nginx-module-0.25
+	sudo ./configure --with-debug --user=nginx --group=nginx --with-pcre=../pcre-8.36/ --with-zlib=../zlib-1.2.8/ --with-http_ssl_module --with-openssl=../openssl-1.0.1g/ --add-module=../headers-more-nginx-module-0.25
 
 #run make and make install
 
